@@ -3,11 +3,11 @@ require File.dirname(__FILE__) + '/../../../spec_helper'
 describe 'Fog::AWS::S3::Files' do
 
   before(:each) do
-    @directory = AWS[:s3].directories.create(:key => 'fogdirectoryname')
-  end
+    if directory = AWS[:s3].directories.get(:key => 'fogdirectoryname')
+      directory.destroy
+    end
 
-  after(:each) do
-    @directory.destroy
+    @directory = AWS[:s3].directories.create(:key => 'fogdirectoryname')
   end
 
   describe "#initialize" do
