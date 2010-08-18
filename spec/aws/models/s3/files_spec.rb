@@ -34,6 +34,24 @@ describe 'Fog::AWS::S3::Files' do
       directory.files.all.should be_nil
     end
 
+    it "should return 1000 files and report truncated" do
+      1010.times do |n|
+        @directory.files.create(:key => "file-#{n}")
+      end
+      response = @directory.files.all
+      response.should have(1000).items
+      response.is_truncated.should be_true
+    end
+
+    it "should limit the max_keys to 1000" do
+      1010.times do |n|
+        @directory.files.create(:key => "file-#{n}")
+      end
+      response = @directory.files.all(:max_keys => 2000)
+      response.should have(1000).items
+      response.is_truncated.should be_true
+    end
+
   end
 
   describe "#create" do
