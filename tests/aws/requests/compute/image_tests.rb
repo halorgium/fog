@@ -31,6 +31,11 @@ Shindo.tests('AWS::Compute | image requests', ['aws']) do
       AWS[:compute].describe_images('ImageId' => GENTOO_AMI).body
     end
 
+    tests("#modify_image_attributes(#{GENTOO_AMI}')").formats({'requestId' => String, "return" => Fog::Boolean}) do
+      pending unless Fog.mocking?
+      AWS[:compute].modify_image_attributes(GENTOO_AMI, 'launchPermission', 'add', 'UserId' => "1234561234").body
+    end
+
   end
 
 end

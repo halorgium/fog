@@ -30,7 +30,13 @@ module Fog
       class Mock
 
         def modify_image_attributes(image_id, attribute, operation_type, options = {})
-          Fog::Mock.not_implemented
+          response = Excon::Response.new
+          response.status = 200
+          response.body = {
+            'requestId' => Fog::AWS::Mock.request_id,
+            'return'    => true
+          }
+          response
         end
 
       end
